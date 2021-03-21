@@ -29,8 +29,8 @@ public class SimpleSentenceDictionaryFinder implements SentenceDictionaryFinder 
     private Integer calculateSentenceRelevance(String line, String sentence) {
         Integer relevance = 0;
 
-        List<String> lineWords = Arrays.asList(line.split(" "));
-        List<String> sentenceWords = Arrays.asList(sentence.split(" "));
+        List<String> lineWords = Arrays.asList(line.toLowerCase().split(" "));
+        List<String> sentenceWords = Arrays.asList(sentence.toLowerCase().split(" "));
 
         for (int i = 0; i < lineWords.size(); i++) {
             if (sentenceWords.contains(lineWords.get(i))) {
