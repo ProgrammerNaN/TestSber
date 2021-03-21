@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Dictionary</title>
 </head>
@@ -9,6 +8,8 @@
 <form action="/dictionary_search/upload" method="post" enctype="multipart/form-data">
     <input type="file" name="dictionary"/>
     <input type="submit" value="upload"/>
+    <p th:if="${dictStatus}" th:text="${dictStatus}" style="color: red"></p>
+    <p th:if="${dictSuccess}" th:text="${dictSuccess}" style="color: green"></p>
 </form>
 
 <form method="post">
