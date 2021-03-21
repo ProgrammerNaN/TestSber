@@ -12,9 +12,22 @@
     <p th:if="${dictSuccess}" th:text="${dictSuccess}" style="color: green"></p>
 </form>
 
-<form method="post">
+<form method="post" style="margin-top: 20px;">
     <input type="text" name="line"/>
     <input type="submit" value="find"/>
+    <p th:if="${dictionaryError}" th:text="${dictionaryError}" style="color: red"></p>
 </form>
+
+<div th:if="${relevantSentences}" th:text="'Таблица релевантных выражений для предложения: ' + ${userLine}" style="margin-top: 20px"></div>
+<table th:if="${relevantSentences}" style="border-collapse: collapse; margin-top: 20px;">
+    <tr>
+        <th style="border: 1px solid black">Выражение</th>
+        <th style="border: 1px solid black">Релевантность</th>
+    </tr>
+    <tr th:each="sentence : ${relevantSentences}">
+        <td th:text="${sentence.key}" style="border: 1px solid black"></td>
+        <td th:text="${sentence.value}" style="border: 1px solid black"></td>
+    </tr>
+</table>
 </body>
 </html>
