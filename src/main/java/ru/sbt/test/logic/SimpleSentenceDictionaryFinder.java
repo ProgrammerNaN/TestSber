@@ -37,7 +37,9 @@ public class SimpleSentenceDictionaryFinder implements SentenceDictionaryFinder 
                 relevance += SAME_WORD_SCORES;
                 int wordIndexInSentence = sentenceWords.indexOf(lineWords.get(i));
                 if (lineWords.size() - 1 > i) {
-                    if (lineWords.get(i + 1).equals(sentenceWords.get(wordIndexInSentence + 1))) {
+                    String lineNextWord = lineWords.get(i + 1);
+                    String sentenceNextWord = sentenceWords.get(wordIndexInSentence + 1);
+                    if (lineNextWord.equals(sentenceNextWord)) {
                         relevance += SAME_WORDS_ORDER;
                     }
                 }

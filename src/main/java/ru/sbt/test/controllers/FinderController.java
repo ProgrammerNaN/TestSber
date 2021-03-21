@@ -30,7 +30,7 @@ public class FinderController {
     }
 
     @GetMapping("/")
-    public String greeting() {
+    public String handlerIndex() {
         logger.info("get request!");
         return "index";
     }
