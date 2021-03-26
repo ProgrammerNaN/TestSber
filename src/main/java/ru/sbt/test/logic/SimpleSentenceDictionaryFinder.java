@@ -1,10 +1,11 @@
 package ru.sbt.test.logic;
 
-import org.apache.tomcat.jni.Mmap;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class SimpleSentenceDictionaryFinder implements SentenceDictionaryFinder {

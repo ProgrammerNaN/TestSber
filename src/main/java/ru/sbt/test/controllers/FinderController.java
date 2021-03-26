@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class FinderController {
@@ -61,10 +60,7 @@ public class FinderController {
 
         if (this.sentences != null && !this.sentences.isEmpty()) {
             Map<String, Integer> relevantSentences = finder.findRelevantSentences(line, this.sentences);
-            List<Map.Entry<String, Integer>> entries = relevantSentences.entrySet().stream()
-                    .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                    .collect(Collectors.toList());
-            ra.addFlashAttribute("relevantSentences", entries);
+            ra.addFlashAttribute("relevantSentences", relevantSentences);
             ra.addFlashAttribute("userLine", line);
         } else {
             ra.addFlashAttribute("dictionaryError", "Словарь не загружен! Загрузите словарь для начала поиска!");
