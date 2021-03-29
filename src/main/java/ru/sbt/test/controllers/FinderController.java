@@ -3,7 +3,6 @@ package ru.sbt.test.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,8 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.sbt.test.logic.SentenceDictionaryFinder;
 
-import java.io.IOException;
-import java.util.Arrays;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,14 +23,19 @@ public class FinderController {
 
     private static final Logger logger = LoggerFactory.getLogger(FinderController.class);
 
+    private static final String UPLOAD_DIR = "/upload/";
+
     private final SentenceDictionaryFinder finder;
 
     private List<String> sentences;
 
+    private HttpServletRequest request;
+
     private File inputFile;
 
-    public FinderController(SentenceDictionaryFinder finder) {
+    public FinderController(SentenceDictionaryFinder finder, HttpServletRequest request) {
         this.finder = finder;
+        this.request = request;
     }
 
     @GetMapping("/")
@@ -47,8 +50,13 @@ public class FinderController {
         //Происходит загрузка файла на жесткий диск сервера для экономии опреативной памяти
         if (file != null) {
             if (!file.isEmpty()) {
-                String fileString = new String(file.getBytes(), "UTF-8");
-                this.sentences = Arrays.asList(fileString.split("\r\n"));
+                String uploadDirRealPath = request.getServletContext().getRealPath(UPLOAD_DIR);
+                if (! new File(uploadDirRealPath).exists()) {
+                    new File(uploadDirRealPath).mkdir();
+                }
+                this.inputFile = new File(uploadDirRealPath + file.getOriginalFilename());
+                logger.info(uploadDirRealPath + file.getOriginalFilename());
+                file.transferTo(this.inputFile);
                 ra.addFlashAttribute("dictSuccess", "Словарь успешно загружен!");
             } else {
                 logger.info("dictStatus - empty");
@@ -93,8 +101,8 @@ public class FinderController {
             }
             //Сортировка элементов Map по значению
             List<Map.Entry<String, Integer>> entries = relevantSentences.entrySet().stream()
-                                                            .sorted(Map.Entry.<String, Integer> comparingByValue().reversed())
-                                                            .collect(Collectors.toList());
+                    .sorted(Map.Entry.<String, Integer> comparingByValue().reversed())
+                    .collect(Collectors.toList());
             ra.addFlashAttribute("relevantSentences", entries);
             ra.addFlashAttribute("userLine", line);
 
@@ -102,7 +110,7 @@ public class FinderController {
                 logger.info("Словарь удален!");
             }
         } else {
-            ra.addFlashAttribute("dictionaryError", "Словарь не загружен! Загрузите словарь для начала поиска!");
+            ra.addFlashAttribute("dictionaryError", "Загрузите словарь для выполнения операции!");
         }
 
         return "redirect:/";
