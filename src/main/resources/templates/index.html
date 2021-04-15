@@ -19,6 +19,7 @@
 </form>
 
 <div th:if="${relevantSentences}" th:text="'Таблица релевантных выражений для предложения: ' + ${userLine}" style="margin-top: 20px"></div>
+<div th:if="${nullUserLine}" th:text="${nullUserLine}" style="color: red"></div>
 <table th:if="${relevantSentences}" style="border-collapse: collapse; margin-top: 20px;">
     <tr>
         <th style="border: 1px solid black">Выражение</th>

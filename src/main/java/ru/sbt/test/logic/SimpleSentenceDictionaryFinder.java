@@ -1,6 +1,7 @@
 package ru.sbt.test.logic;
 
 import org.springframework.stereotype.Component;
+import ru.sbt.test.exceptions.NullInputSentenceException;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,7 +20,12 @@ public class SimpleSentenceDictionaryFinder implements SentenceDictionaryFinder 
      * @return карта, в которой ключ - строка из словаря, значение - ее релеванстность
      */
     @Override
-    public Map<String, Integer> findRelevantSentences(String line, List<String> sentences) {
+    public Map<String, Integer> findRelevantSentences(String line, List<String> sentences) throws NullInputSentenceException {
+
+        if (line == null) {
+            throw new NullInputSentenceException();
+        }
+
         Map<String, Integer> relevantSentences = new HashMap<>();
 
         for (String sentence: sentences) {

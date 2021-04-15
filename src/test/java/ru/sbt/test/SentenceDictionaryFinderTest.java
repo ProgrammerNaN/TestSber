@@ -3,6 +3,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import ru.sbt.test.exceptions.NullInputSentenceException;
 import ru.sbt.test.logic.SentenceDictionaryFinder;
 import ru.sbt.test.logic.SimpleSentenceDictionaryFinder;
 
@@ -49,6 +50,12 @@ public class SentenceDictionaryFinderTest {
         Map<String, Integer> expectation = new HashMap<>();
         Map<String, Integer> result = this.finder.findRelevantSentences(line, dictionary);
         Assert.assertEquals(expectation, result);
+    }
+
+    @Test(expected = NullInputSentenceException.class)
+    public void testNullStringDictionary() {
+        List<String> dictionary = Arrays.asList("аппетит приходит во время еды", "беда не приходит одна");
+        Map<String, Integer> result = this.finder.findRelevantSentences(null, dictionary);
     }
 
 }
